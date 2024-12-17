@@ -27,6 +27,7 @@ root.rowconfigure(0, weight=1)
 
 #Initialize
 defaultKeys = 'asdfjkl;qweruiopzxcvm,./ghtybn'
+rootDirectory = './spells (scripts)'
 currentDirectory = './spells (scripts)'
 
 directories = os.listdir(currentDirectory)
@@ -46,20 +47,20 @@ menuLabel.grid(column=1, row=2, sticky=(W, E))
 
 ########## Hotkey Listener Start ##########
 
-withDraw = True
+withDrawn = False
 def toggle_menu():
-    print('<ctrl>+<shift> pressed')
-    global withDraw
-    if(withDraw):
-        root.withdraw()
-        withDraw = False
-    else:
+    # print('<ctrl>+<shift> pressed')
+    global withDrawn
+    if(withDrawn):
         root.deiconify()
-        withDraw = True
+        withDrawn = False
+    else:
+        root.withdraw()
+        withDrawn = True
 
 def close_menu():
     global hotkeyListener
-    print('<shift>+<esc> pressed')
+    # print('<shift>+<esc> pressed')
     hotkeyListener.stop()
     root.destroy()
 
@@ -77,13 +78,25 @@ hotkeyListener.start()
 keypressListener = keyboard.Listener()
 
 def on_press(key):
+    #No actions when withdrawn
+    global withDrawn
+    # print(withDrawn)
+    if(withDrawn):
+       return 
+
     global currentDirectory
     global defaultKeys
     global menuLabel
+    global rootDirectory
 
+    #Entering scopes
     try:
         defaultKeyIndex = defaultKeys.find('{0}'.format(key.char))
         currentDirectory += '/' + os.listdir(currentDirectory)[defaultKeyIndex]
+
+        if('.py' in currentDirectory):
+            runpy.run_path(currentDirectory)
+        
         currentDirectories = os.listdir(currentDirectory)
         dirLength = len(currentDirectories)
         newMenu = ''
@@ -93,6 +106,7 @@ def on_press(key):
 
         menuLabel.configure(text = newMenu)
 
+    #Exiting scopes
     except AttributeError:
         if(key == keyboard.Key.tab):
             currentDirectory = currentDirectory[0:currentDirectory.rfind('/')]
@@ -104,7 +118,19 @@ def on_press(key):
                 newMenu += defaultKeys[i] + '. ' + currentDirectories[i] + '\n'
 
             menuLabel.configure(text = newMenu)
-   
+
+    except NotADirectoryError:
+        currentDirectory = rootDirectory
+        currentDirectories = os.listdir(currentDirectory)
+        dirLength = len(currentDirectories)
+        newMenu = ''
+
+        for i in range(dirLength):
+            newMenu += defaultKeys[i] + '. ' + currentDirectories[i] + '\n'
+
+        menuLabel.configure(text = newMenu)
+        toggle_menu()
+    
 
 listener = keyboard.Listener(
     on_press=on_press)
