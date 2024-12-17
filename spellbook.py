@@ -18,7 +18,6 @@ import sv_ttk
 root = Tk()
 root.title("Spellbook")
 root.attributes("-topmost", 1)
-root.overrideredirect(True)
 root.geometry('600x150+700-49')
 
 #Mainframe settings
@@ -123,6 +122,17 @@ def on_press(key):
                 newMenu += defaultKeys[i] + '. ' + currentDirectories[i] + '\n'
 
             menuLabel.configure(text = newMenu)
+        if(key == keyboard.Key.esc):
+            currentDirectory = rootDirectory
+            currentDirectories = os.listdir(currentDirectory)
+            dirLength = len(currentDirectories)
+            newMenu = ''
+
+            for i in range(dirLength):
+                newMenu += defaultKeys[i] + '. ' + currentDirectories[i] + '\n'
+
+            menuLabel.configure(text = newMenu)
+ 
 
     except NotADirectoryError:
         currentDirectory = rootDirectory
@@ -136,6 +146,8 @@ def on_press(key):
         menuLabel.configure(text = newMenu)
         toggle_menu()
     
+    except IndexError:
+        return
 
 listener = keyboard.Listener(
     on_press=on_press)
