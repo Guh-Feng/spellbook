@@ -6,6 +6,8 @@ from tkinter import ttk
 from time import sleep
 import os
 
+import sv_ttk
+
 # Learn about dev chrome control, more general creation of folders and applying scripts in files with routing logic or manual folder creation with auto script finding
 # Outside scripts return 0, configures scripts to run, have the window work and scripts run when not withdrawn
 
@@ -24,6 +26,9 @@ mainframe = ttk.Frame(root, padding="12 12 12 12")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
+mainframe.columnconfigure(0, weight=1)
+mainframe.rowconfigure(0, weight=1)
+mainframe.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 #Initialize
 defaultKeys = 'asdfjkl;qweruiopzxcvm,./ghtybn'
@@ -137,6 +142,8 @@ listener = keyboard.Listener(
 listener.start()
 
 ########## Keypress Listener End ##########
+
+sv_ttk.set_theme("dark")
 
 root.mainloop()
 """
