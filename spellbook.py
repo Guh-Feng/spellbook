@@ -65,7 +65,9 @@ def toggle_menu():
 def close_menu():
     global hotkeyListener
     # print('<shift>+<esc> pressed')
+
     hotkeyListener.stop()
+    sleep(0.1)
     root.destroy()
 
 hotkeyListener = keyboard.GlobalHotKeys({
@@ -114,6 +116,9 @@ def on_press(key):
     except AttributeError:
         if(key == keyboard.Key.tab):
             currentDirectory = currentDirectory[0:currentDirectory.rfind('/')]
+            if(currentDirectory == '.'):
+                currentDirectory = rootDirectory
+                return
             currentDirectories = os.listdir(currentDirectory)
             dirLength = len(currentDirectories)
             newMenu = ''
