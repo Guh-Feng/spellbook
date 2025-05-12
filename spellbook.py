@@ -1,16 +1,11 @@
 import runpy
 from pynput import keyboard
-import sqlite3
 from tkinter import *
 from tkinter import ttk
 from time import sleep
 import os
 
 import sv_ttk
-
-# Learn about dev chrome control, more general creation of folders and applying scripts in files with routing logic or manual folder creation with auto script finding
-# Outside scripts return 0, configures scripts to run, have the window work and scripts run when not withdrawn
-
 
 ########## Tkinter Initialization Start ##########
 
@@ -55,9 +50,11 @@ withDrawn = False
 def toggle_menu():
     # print('<ctrl>+<shift> pressed')
     global withDrawn
+    global root
     if(withDrawn):
         root.deiconify()
         withDrawn = False
+        root.focus_force()
     else:
         root.withdraw()
         withDrawn = True
@@ -163,9 +160,3 @@ listener.start()
 sv_ttk.set_theme("dark")
 
 root.mainloop()
-"""
-wizardDatabaseConnection = sqlite3.connect('wizard.db')
-cursor = wizardDatabaseConnection.cursor()
-cursor.execute('CREATE TABLE IF NOT EXISTS spells (hotkey text, script text)')
-cursor.execute('')
-"""
