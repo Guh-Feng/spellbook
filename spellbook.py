@@ -55,6 +55,7 @@ def toggle_menu():
         root.deiconify()
         withDrawn = False
         root.focus_force()
+        mainframe.focus_force()
     else:
         root.withdraw()
         withDrawn = True
@@ -68,7 +69,7 @@ def close_menu():
     root.destroy()
 
 hotkeyListener = keyboard.GlobalHotKeys({
-        '<ctrl>+<shift>': toggle_menu,
+        '<ctrl>+<alt>': toggle_menu,
         '<shift>+<esc>': close_menu})
 hotkeyListener.start()
 
