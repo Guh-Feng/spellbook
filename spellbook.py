@@ -4,7 +4,7 @@ from tkinter import *
 from tkinter import ttk
 from time import sleep
 import os
-
+import pyperclip
 import sv_ttk
 
 ########## Tkinter Initialization Start ##########
@@ -98,8 +98,9 @@ def on_press(key):
         defaultKeyIndex = defaultKeys.find('{0}'.format(key.char))
         currentDirectory += '/' + os.listdir(currentDirectory)[defaultKeyIndex]
 
-        if('.py' in currentDirectory):
-            runpy.run_path(currentDirectory)
+        if('.txt' in currentDirectory):
+            with open(currentDirectory, 'r') as file:
+                pyperclip.copy(file.read())
         
         currentDirectories = os.listdir(currentDirectory)
         dirLength = len(currentDirectories)
